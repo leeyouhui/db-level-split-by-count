@@ -17,24 +17,31 @@
 	</sql>
 
 	<!-- 重置 -->
-	<update id="reset">
+	<update id="reset" parameterType="UserCount">
 		update `user_count` set
 		count = 0,
-		create_time = now()
-	</update>
-
-	<!-- 更新 -->
-	<update id="update" parameterType="UserCount">
-		update `user_count` set
-		count = count + 1,
 		table_name = #{tableName},
 		create_time = now()
 	</update>
 
+	<!-- 增加计数 -->
+	<update id="increase">
+		update `user_count` set
+		count = count + 1,
+		create_time = now()
+	</update>
+
 	<!-- 获取当前计数和表名 -->
-	<select id="getCurrentUserCount" resultType="java.lang.Integer">
+	<select id="getCurrentUserCount" resultMap="BaseResultMap">
 		select <include refid="columns"/> from `user_count`
 	</select>
+	
+	<!-- 更新表名 -->
+	<update id="updateTableName" parameterType="java.lang.String">
+		update `user_count` set
+		table_name = #{tableName},
+		create_time = now()
+	</update>
 
 	<!-- 创建新表 -->
 	<insert id="createNewTable" parameterType="java.lang.String">

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.lyh.db.level.split.dao.UserDao;
 import com.lyh.db.level.split.domain.User;
-import com.lyh.db.level.split.domain.UserCount;
 import com.lyh.db.level.split.service.UserCountService;
 import com.lyh.db.level.split.service.UserService;
 
@@ -51,14 +50,12 @@ public class UserServiceImpl implements UserService {
 		return userDao.listPageUser(param);
 	}
 
+	/**
+	 * 建新表并重置计数表
+	 */
 	@Override
 	public int createNewTable(String tableName) {
-		int i = userDao.createNewTable(tableName);
-		if(i > 0){
-			UserCount userCount = new UserCount();
-			userCountService.update(userCount);
-		}
-		return i;
+		return userDao.createNewTable(tableName);
 	}
 
 	@Override

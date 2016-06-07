@@ -92,7 +92,7 @@
 				from ${tableName}
 				<include refid="conditions" />
 			</foreach>
-			)
+			) u
 		</if>
 	</select>
 
@@ -141,5 +141,8 @@
 		information_schema.`TABLES`
 		WHERE
 		TABLE_SCHEMA = #{dbName}
+		<if test="tableName != null and tableName != ''">
+			and TABLE_NAME like CONCAT('%','${tableName}','%' ) 
+		</if>
 	</select>
 </mapper>

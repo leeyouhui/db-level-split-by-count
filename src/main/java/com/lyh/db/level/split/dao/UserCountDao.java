@@ -1,10 +1,16 @@
 package com.lyh.db.level.split.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.lyh.db.level.split.domain.UserCount;
 
 public interface UserCountDao {
 	
-	int update(UserCount userCount);
+	/**
+	 * 增加计数
+	 * @return
+	 */
+	int increase();
 	
 	/**
 	 * 获取当前计数和表名
@@ -14,5 +20,7 @@ public interface UserCountDao {
 	 */
 	UserCount getCurrentUserCount();
 	
-	int reset();
+	int reset(UserCount userCount);
+
+	int updateTableName(@Param("lastTableName")String lastTableName);
 }

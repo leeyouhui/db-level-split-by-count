@@ -13,16 +13,9 @@ public class UserCountServiceImpl implements UserCountService {
 	@Autowired
 	private UserCountDao userCountDao;
 	
-	//当前计数(每次加载文件)
-	public static int currentCount;
-	
-	{
-		currentCount = this.getCurrentUserCount().getCount();
-	}
-	
 	@Override
-	public synchronized int update(UserCount userCount) {
-		return userCountDao.update(userCount);
+	public synchronized int increase() {
+		return userCountDao.increase();
 	}
 
 	@Override
@@ -31,8 +24,13 @@ public class UserCountServiceImpl implements UserCountService {
 	}
 
 	@Override
-	public synchronized int reset() {
-		return userCountDao.reset();
+	public synchronized int reset(UserCount userCount) {
+		return userCountDao.reset(userCount);
+	}
+	
+	@Override
+	public int updateTableName(String lastTableName) {
+		return userCountDao.updateTableName(lastTableName);	
 	}
 
 }
