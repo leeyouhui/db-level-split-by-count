@@ -1,0 +1,31 @@
+package com.lyh.db.level.split.service;
+
+import com.lyh.db.level.split.domain.UserCount;
+
+public interface UserCountService {
+	
+	/**
+	 * 更新
+	 * @Author: liyouhui
+	 * @Date：2016年6月7日下午4:33:05
+	 * @param userCount
+	 * @return
+	 */
+	int update(UserCount userCount);
+	
+	/**
+	 * 获取当前计数和表名
+	 * @Author: liyouhui
+	 * @Date：2016年6月7日下午3:03:23
+	 * @return
+	 */
+	UserCount getCurrentUserCount();
+
+	/**
+	 * 重置
+	 * @Author: liyouhui
+	 * @Date：2016年6月7日下午4:32:55
+	 * @return
+	 */
+	int reset();
+}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lyh.db.level.split.dao.UserCountDao">
+
+	<resultMap id="BaseResultMap" type="com.lyh.db.level.split.domain.UserCount">
+		<result column="count" property="count" />
+		<result column="table_name" property="tableName" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+
+	<!-- 表的列 -->
+	<sql id="columns">
+		count,
+		table_name,
+		create_time
+	</sql>
+
+	<!-- 重置 -->
+	<update id="reset">
+		update `user_count` set
+		count = 0,
+		create_time = now()
+	</update>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="UserCount">
+		update `user_count` set
+		count = count + 1,
+		table_name = #{tableName},
+		create_time = now()
+	</update>
+
+	<!-- 获取当前计数和表名 -->
+	<select id="getCurrentUserCount" resultType="java.lang.Integer">
+		select <include refid="columns"/> from `user_count`
+	</select>
+
+	<!-- 创建新表 -->
+	<insert id="createNewTable" parameterType="java.lang.String">
+		CREATE TABLE if not
+		exists `user_count` (
+		`count` int(10) default '0' COMMENT '计数',
+		`table_name` varchar(20) default NULL COMMENT '表名',
+		`create_time` datetime default NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计数表' ;
+	</insert>
+
+</mapper>
