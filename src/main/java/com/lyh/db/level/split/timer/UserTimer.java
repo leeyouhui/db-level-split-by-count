@@ -45,6 +45,7 @@ public class UserTimer {
 			if(StringUtils.isEmpty(userCount.getTableName())){
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("dbName", "user");
+				map.put("tableName", "user_1");
 				List<String> tableNames = userService.getAllTableNames(map);
 				if(tableNames == null || tableNames.size() <=0){
 					return ;
@@ -69,11 +70,11 @@ public class UserTimer {
 	 * @return
 	 */
 	public String getLastTableName(List<String> tableNames){
-		int[] ss = new int[tableNames.size()];
+		long[] ss = new long[tableNames.size()];
 		for(int i = 0; i<tableNames.size();i++){
 			String tableName = tableNames.get(i);
 			if(StringUtils.isEmpty(tableName)) continue;
-			ss[i] = Integer.parseInt(tableName.replaceAll(UserUtil.TABLE_PREFIX, ""));
+			ss[i] = Long.parseLong(tableName.replaceAll(UserUtil.TABLE_PREFIX, ""));
 			
 		}
 		Arrays.sort(ss);

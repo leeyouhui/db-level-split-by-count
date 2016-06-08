@@ -27,10 +27,10 @@ public class UserUtil {
 	@Autowired
 	private UserServiceImpl userServiceImpl;
 	
-	public static User createUser() {
+	public static User createUser(String name) {
 		User user = new User();
 		user.setId(UUID.randomUUID().toString());
-		user.setName("name"+new Date().getTime());
+		user.setName(name);
 		user.setSex(1);
 		user.setAge(24);
 		user.setTel("12346789");
@@ -62,6 +62,30 @@ public class UserUtil {
 				userCountNew.setTableName(tableName);
 				userCountServiceImpl.reset(userCountNew);
 			}
+			userCountServiceImpl.increase();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tableName;
+	}
+	
+	//不对
+	public synchronized String validCurrentCountAndReturnTableName1(){
+		String tableName = null;
+		try {
+			//每插一条数据就查一次，待优化
+			int currentCount = UserCountServiceImpl.getCurrentCount();
+			tableName = UserCountServiceImpl.getCurrentTableName();
+			if(currentCount >=  dbRowMaxNum || StringUtils.isEmpty(tableName)){
+				tableName = initTableName();
+				userServiceImpl.createNewTable(tableName);
+				//重置计数表
+				UserCount userCountNew = new UserCount();
+				userCountNew.setTableName(tableName);
+				userCountServiceImpl.reset(userCountNew);
+				UserCountServiceImpl.setCurrentTableName(tableName);
+			}
+			UserCountServiceImpl.setCurrentCount(++currentCount);
 			userCountServiceImpl.increase();
 		} catch (Exception e) {
 			e.printStackTrace();

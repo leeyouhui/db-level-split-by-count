@@ -15,7 +15,7 @@ public class UserAction {
 	private UserService userService;
 	
 	public void insert() {
-		User user = UserUtil.createUser();
+		User user = UserUtil.createUser("name");
 		userService.insert(user);
 	}
 

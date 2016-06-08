@@ -39,7 +39,7 @@
 	<!-- 更新表名 -->
 	<update id="updateTableName" parameterType="java.lang.String">
 		update `user_count` set
-		table_name = #{tableName},
+		table_name = #{lastTableName},
 		create_time = now()
 	</update>
 

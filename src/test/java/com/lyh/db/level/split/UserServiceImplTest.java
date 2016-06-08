@@ -1,5 +1,6 @@
 package com.lyh.db.level.split;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,13 +31,41 @@ public class UserServiceImplTest {
 
 	@Test
 	public void testInsert() {
+		MyThread m1 = new MyThread();
+		m1.setName("m1");
+		MyThread m2 = new MyThread();
+		m2.setName("m2");
+		
+		m1.start();
+		m2.start();
+		
 		int i = 0;
-		while(i < 5){
-			User user = UserUtil.createUser();
+		while(i < 201){
+			User user = UserUtil.createUser(Thread.currentThread().getName());
 			user.setTableName(userUtil.validCurrentCountAndReturnTableName());
 			System.out.println(userService.insert(user));
 			i++;
 		}
+	}
+	
+	class MyThread extends Thread{
+
+		public void run() {
+			int i = 0;
+			while(i < 101){
+				User user = UserUtil.createUser(Thread.currentThread().getName());
+				user.setTableName(userUtil.validCurrentCountAndReturnTableName());
+				System.out.println(userService.insert(user));
+				i++;
+			}
+			
+		}
+		
+	}
+	
+	@Test
+	public void valid(){
+		System.out.println(userUtil.validCurrentCountAndReturnTableName1());
 	}
 
 	@Test
@@ -85,10 +114,17 @@ public class UserServiceImplTest {
 	public void testGetAllTableNames() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("dbName", "user");
+		map.put("tableName", "user_1");
 		List<String> tableNames = userService.getAllTableNames(map);
 		for(String tableName : tableNames){
 			System.out.println(tableName);
 		}
 	}
 
+	@Test
+	public void startProject() throws IOException {
+		System.err.println("------start------");
+		System.in.read();
+	}
 }
+
